@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.talend.components.api.container.RuntimeContainer;
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.daikon.NamedThing;
-import org.talend.daikon.avro.util.AvroUtils;
+import org.talend.daikon.avro.DynamicTypeFactory;
 import org.talend.daikon.properties.ValidationResult;
 
 import java.io.IOException;
@@ -22,11 +22,10 @@ public class RuntimeHelperTest {
         Schema designSchema = SchemaBuilder.record("design").fields()
                 .name("f1").type().stringType().noDefault()
                 .name("f2").type().stringType().noDefault()
-                .name("dynamic").type().bytesType().noDefault()
+                .name("dynamic").type(DynamicTypeFactory.getDynamic()).noDefault()
                 .name("f3").type().stringType().noDefault()
                 .endRecord();
 
-        AvroUtils.setFieldDynamic(designSchema.getField("dynamic"));
 
         Schema resolved = RuntimeHelper.resolveSchema(null, new SourceOrSink() {
             @Override

@@ -2,6 +2,7 @@ package org.talend.components.api.component.runtime;
 
 import org.apache.avro.Schema;
 import org.talend.components.api.container.RuntimeContainer;
+import org.talend.daikon.avro.DynamicTypeFactory;
 import org.talend.daikon.avro.util.AvroUtils;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class RuntimeHelper {
 
         int dynamicIndex = 0;
         for (Schema.Field se : copyFieldList) {
-            if (AvroUtils.isDynamic(se.schema())) {
+            if (DynamicTypeFactory.isDynamic(se.schema())) {
                 break;
             }
             dynamicIndex++;
