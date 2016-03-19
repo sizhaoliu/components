@@ -12,32 +12,21 @@
 // ============================================================================
 package org.talend.components.api.component;
 
+import org.apache.avro.Schema;
+
 /**
- * A connector links two components together. It allows its input component to transmit data to its output component.
- *
- * The two components of a connector will be part of the same subjob.
+ * A connector is a token used by a component to define the avaialble inputs and outputs it has. It shall be used to
+ * retreive the schema {@link Schema} associated with a connector if any. A component may have multiple connectors of
+ * the same types.<br>
+ * WARNING: this interface should not be implemented by clients of the APIs, only component provide an implementations
+ * for it.
  */
-public class Connector extends AbstractComponentConnection {
+public interface Connector {
 
     public enum ConnectorType {
-        FLOW,
         MAIN,
         REJECT
     }
 
-    protected ConnectorType type;
-
-    public Connector(ConnectorType type, int maxInput, int maxOutput) {
-        super(maxInput, maxOutput);
-        this.type = type;
-    }
-
-    public ConnectorType getType() {
-        return type;
-    }
-
-    public void setType(ConnectorType type) {
-        this.type = type;
-    }
-
+    public ConnectorType getType();
 }

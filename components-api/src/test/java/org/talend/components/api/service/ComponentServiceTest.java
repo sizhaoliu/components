@@ -16,14 +16,18 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.avro.Schema;
+import org.apache.avro.SchemaBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.talend.components.api.component.ComponentDefinition;
+import org.talend.components.api.component.Connector;
 import org.talend.components.api.exception.ComponentException;
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.components.api.service.internal.ComponentServiceImpl;
@@ -165,4 +169,38 @@ public class ComponentServiceTest extends AbstractComponentTest {
     public void testGetAllDepenendencies() {
         ComponentTestUtils.testAllDesignDependenciesPresent(getComponentService(), errorCollector);
     }
+
+    @Test
+    public void testGetSchema() {
+        TestComponentProperties componentProperties = (TestComponentProperties) getComponentService()
+                .getComponentProperties(TestComponentDefinition.COMPONENT_NAME);
+        Schema aSchema = SchemaBuilder.builder().booleanType();
+        componentProperties.mainOutput.setValue(aSchema);
+        Schema schema = getComponentService().getSchema(componentProperties,
+                componentProperties.getAllConnectors().iterator().next(), true);
+        assertEquals(aSchema, schema);
+        schema = getComponentService().getSchema(componentProperties, new Connector() {
+
+            @Override
+            public ConnectorType getType() {
+                return null;
+            }
+        }, true);
+        assertNull(schema);
+    }
+
+    @Test
+    public void testAvailalbleConnectors() {
+        TestComponentProperties componentProperties = (TestComponentProperties) getComponentService()
+                .getComponentProperties(TestComponentDefinition.COMPONENT_NAME);
+        Set<Connector> availableConnectors = getComponentService().getAvailableConnectors(componentProperties,
+                Collections.EMPTY_SET, true);
+        assertThat(availableConnectors, not(is(empty())));
+        Connector mainConnector = componentProperties.getAllConnectors().iterator().next();
+        assertEquals(availableConnectors.iterator().next(), mainConnector);
+        availableConnectors = getComponentService().getAvailableConnectors(componentProperties,
+                Collections.singleton(mainConnector), true);
+        assertThat(availableConnectors, is(empty()));
+    }
+
 }

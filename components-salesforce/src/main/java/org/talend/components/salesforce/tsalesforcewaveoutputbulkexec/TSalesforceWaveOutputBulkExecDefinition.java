@@ -14,17 +14,15 @@ package org.talend.components.salesforce.tsalesforcewaveoutputbulkexec;
 
 import org.talend.components.api.Constants;
 import org.talend.components.api.component.ComponentDefinition;
-import org.talend.components.api.component.Connector;
-import org.talend.components.api.component.Connector.ConnectorType;
 import org.talend.components.api.component.OutputComponentDefinition;
 import org.talend.components.api.component.Trigger;
 import org.talend.components.api.component.Trigger.TriggerType;
 import org.talend.components.api.component.runtime.Sink;
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.components.salesforce.SalesforceDefinition;
+import org.talend.components.salesforce.runtime.SalesforceSink;
 
 import aQute.bnd.annotation.component.Component;
-import org.talend.components.salesforce.runtime.SalesforceSink;
 
 @Component(name = Constants.COMPONENT_BEAN_PREFIX
         + TSalesforceWaveOutputBulkExecDefinition.COMPONENT_NAME, provide = ComponentDefinition.class)
@@ -35,7 +33,6 @@ public class TSalesforceWaveOutputBulkExecDefinition extends SalesforceDefinitio
     public TSalesforceWaveOutputBulkExecDefinition() {
         super(COMPONENT_NAME);
 
-        setConnectors(new Connector(ConnectorType.FLOW, 1, 0));
         setTriggers(new Trigger(TriggerType.ITERATE, 1, 0), new Trigger(TriggerType.SUBJOB_OK, 1, 0),
                 new Trigger(TriggerType.SUBJOB_ERROR, 1, 0));
     }
@@ -59,4 +56,5 @@ public class TSalesforceWaveOutputBulkExecDefinition extends SalesforceDefinitio
     public Sink getRuntime() {
         return new SalesforceSink();
     }
+
 }

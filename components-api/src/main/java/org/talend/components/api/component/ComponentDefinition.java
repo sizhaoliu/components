@@ -23,6 +23,8 @@ import org.talend.components.api.properties.ComponentProperties;
 
 public interface ComponentDefinition extends TopLevelDefinition {
 
+    public static final String USER_DEFINED_CONNECTOR = "USER_DEFINED_CONNECTOR";
+
     /**
      * Returns an array of paths that represent the categories of the component.
      */
@@ -37,13 +39,6 @@ public interface ComponentDefinition extends TopLevelDefinition {
      * create the ComponentProperties and initialize it's properties only and not the UI Layout not usefull for runtime
      */
     public ComponentProperties createRuntimeProperties();
-
-    /**
-     * Returns the types of {@link Connector} objects supported by this component.
-     *
-     * A connector is a link between two components that transmit data.
-     */
-    public Connector[] getConnectors();
 
     /**
      * Returns the types of {@link Trigger} objects supported by this component.

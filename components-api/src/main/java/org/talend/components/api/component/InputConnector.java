@@ -12,31 +12,24 @@
 // ============================================================================
 package org.talend.components.api.component;
 
-public abstract class AbstractComponentConnection {
+/**
+ * defines how many input this component can handle
+ */
+public class InputConnector {
 
     private int maxInput;
 
-    private int maxOutput;
-
-    public AbstractComponentConnection(int maxInput, int maxOutput) {
+    public InputConnector(int maxInput) {
         this.maxInput = maxInput;
-        this.maxOutput = maxOutput;
     }
 
+    /**
+     * Getter for maxInput possible for the associated component.
+     * 
+     * @return the maxInput
+     */
     public int getMaxInput() {
         return maxInput;
-    }
-
-    public void setMaxInput(int maxInput) {
-        this.maxInput = maxInput;
-    }
-
-    public int getMaxOutput() {
-        return maxOutput;
-    }
-
-    public void setMaxOutput(int maxOutput) {
-        this.maxOutput = maxOutput;
     }
 
 }

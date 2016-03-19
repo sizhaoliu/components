@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2015 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -10,14 +10,13 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.components.api.component;
+package org.talend.components.api.component.runtime;
 
-public class StudioConstants {
+import org.apache.avro.Schema;
+import org.apache.avro.generic.IndexedRecord;
 
-    /**
-     * key associated with schema proerties to specify the associated {@link Connector.ConnectorType} with the given
-     * schema.
-     */
-    public static final String CONNECTOR_TYPE_SCHEMA_KEY = "ConnectionType"; //$NON-NLS-1$
+public interface Rejectable<T> {
+
+    IndexedRecord handleRejectedRecord(T bestEffort, Schema.Field field, Exception exception);
 
 }

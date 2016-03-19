@@ -19,7 +19,7 @@ package org.talend.components.api.component;
  *
  * Trigger connections are used to define the different subjobs of a job.
  */
-public class Trigger extends AbstractComponentConnection {
+public class Trigger {
 
     // FIXME - are the RUN_IF, COMPONENT_OK, COMPONENT_ERROR always present?
 
@@ -32,15 +32,19 @@ public class Trigger extends AbstractComponentConnection {
         RUN_IF
     }
 
+    private int maxInput;
+
+    private int maxOutput;
+
     protected TriggerType type;
 
     public Trigger(TriggerType type) {
-        super(1, 1);
-        this.type = type;
+        this(type, 1, 1);
     }
 
     public Trigger(TriggerType type, int maxInput, int maxOutput) {
-        super(maxInput, maxOutput);
+        this.maxInput = maxInput;
+        this.maxOutput = maxOutput;
         this.type = type;
     }
 
@@ -48,8 +52,12 @@ public class Trigger extends AbstractComponentConnection {
         return type;
     }
 
-    public void setType(TriggerType type) {
-        this.type = type;
+    public int getMaxInput() {
+        return maxInput;
+    }
+
+    public int getMaxOutput() {
+        return maxOutput;
     }
 
 }

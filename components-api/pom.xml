@@ -234,6 +234,7 @@
                         </goals>
                         <configuration>
                             <classifier>bundle</classifier>
+                            <unpackBundle>true</unpackBundle>
                             <instructions>
                                 <Bundle-SymbolicName>org.talend.components.api</Bundle-SymbolicName>
                                 <Service-Component>*</Service-Component>
@@ -250,6 +251,7 @@
                             </instructions>
                         </configuration>
                     </execution>
+                    
 				</executions>
 			</plugin>
 		</plugins>

@@ -15,18 +15,20 @@ package org.talend.components.salesforce;
 import static org.talend.daikon.properties.PropertyFactory.*;
 import static org.talend.daikon.properties.presentation.Widget.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
+import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
+import org.talend.components.api.component.PropertyPathConnector;
 import org.talend.components.api.properties.ComponentPropertyFactory;
 import org.talend.components.common.SchemaProperties;
 import org.talend.daikon.properties.Property;
 import org.talend.daikon.properties.ValidationResult;
 import org.talend.daikon.properties.presentation.Form;
 import org.talend.daikon.properties.presentation.Widget;
-import org.apache.avro.Schema;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SalesforceOutputProperties extends SalesforceConnectionModuleProperties {
 
@@ -76,7 +78,7 @@ public class SalesforceOutputProperties extends SalesforceConnectionModuleProper
         @Override
         public ValidationResult afterModuleName() throws Exception {
             ValidationResult validationResult = super.afterModuleName();
-            String sJson = schema.schema.getStringValue();
+            String sJson = main.schema.getStringValue();
             Schema s = new Schema.Parser().parse(sJson);
             List<String> fieldNames = new ArrayList<>();
             for (Schema.Field f : s.getFields()) {
@@ -114,11 +116,8 @@ public class SalesforceOutputProperties extends SalesforceConnectionModuleProper
         ComponentPropertyFactory.newReturnProperty(returns, Property.Type.INT, "NB_SUCCESS"); //$NON-NLS-1$
         ComponentPropertyFactory.newReturnProperty(returns, Property.Type.INT, "NB_REJECT"); //$NON-NLS-1$
 
-        Schema s = SchemaBuilder.record("Reject").fields()
-                .name("errorCode").type().intType().noDefault()
-                .name("errorFields").type().stringType().noDefault()
-                .name("errorMessage").type().stringType().noDefault()
-                .endRecord();
+        Schema s = SchemaBuilder.record("Reject").fields().name("errorCode").type().intType().noDefault().name("errorFields")
+                .type().stringType().noDefault().name("errorMessage").type().stringType().noDefault().endRecord();
         schemaReject.schema.setValue(s);
 
         setupUpsertRelation(upsertRelation, !POLY);
@@ -157,6 +156,15 @@ public class SalesforceOutputProperties extends SalesforceConnectionModuleProper
                 form.getWidget("upsertKeyColumn").setVisible(isUpsert);
                 advForm.getWidget("upsertRelation").setVisible(isUpsert);
             }
+        }
+    }
+
+    @Override
+    protected Set<PropertyPathConnector> getAllSchemaPropertiesConnectors(boolean isOutputConnection) {
+        if (isOutputConnection) {
+            return Collections.EMPTY_SET;
+        } else {
+            return Collections.singleton(MAIN_CONNECTOR);
         }
     }
 
